@@ -24,3 +24,13 @@
   - endpoint returns a 401 unauthorized error if the api_key and user id dont match
   - endpoint returns a 401 unauthorized error if no api_key is provided
   - endpoint returns a 401 unauthorized error if api_key is blank
+
+
+##### POST user login endpoint
+- happy path testing includes:
+  - endpoint returns a 200 respons and user object if email and password are valid
+- Edge case & Sad path testing includes:
+  - endpoint returns a 400 invalid login error if a user doesn't exist
+  - endpoint returns a 400 invalid login error if the email and password dont match
+  - endpoint returns a 400 invalid login error if no password is provided
+  - endpoint returns a 400 invalid login error if no email is provided
