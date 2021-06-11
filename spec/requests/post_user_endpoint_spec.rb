@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "POST user endpoint" do
   describe "Happy Path" do
-    it "returns a new user object if all required params are provided" do
+    it "returns a 201 response with a new user object" do
       company = Company.create!(name: "Rowan Electric")
       user_params = { company_id: company.id,
                       first_name: 'Doug',
@@ -37,7 +37,7 @@ RSpec.describe "POST user endpoint" do
   end
 
   describe "Sad path and Edge case" do
-    it "returns an error if the request body is not provided" do
+    it "returns a 400 response and appropriate errors if the request body is blank" do
       post "/api/v1/users"
 
       body = JSON.parse(response.body, symbolize_names: true)
@@ -50,7 +50,7 @@ RSpec.describe "POST user endpoint" do
       expect(body[:error]).to eq("Validation failed: Company must exist, First name can't be blank, Last name can't be blank, Email can't be blank, Email is invalid, Password can't be blank, Password can't be blank, Password confirmation can't be blank")
     end
 
-    it "returns an error if the password and confirmation don't match" do
+    it "returns a 400 response and appropriate error if the password and confirmation don't match" do
       company = Company.create!(name: "Rowan Electric")
       user_params = { company_id: company.id,
                       first_name: 'Doug',
@@ -74,7 +74,7 @@ RSpec.describe "POST user endpoint" do
       expect(body[:error]).to eq("Validation failed: Password confirmation doesn't match Password")
     end
 
-    it "returns an error if the email is in an invalid format" do
+    it "returns a 400 response and appropriate error if the email is in an invalid format" do
       company = Company.create!(name: "Rowan Electric")
       user_params = { company_id: company.id,
                       first_name: 'Doug',
@@ -98,7 +98,7 @@ RSpec.describe "POST user endpoint" do
       expect(body[:error]).to eq("Validation failed: Email is invalid")
     end
 
-    it "returns an error if email is not unique" do
+    it "returns a 400 response and appropriate error if email is not unique" do
       company = Company.create!(name: "Rowan Electric")
 
       User.create!( company_id: company.id,
