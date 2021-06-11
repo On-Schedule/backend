@@ -6,6 +6,7 @@
 | ---------- | ------ | -------- | ------:|
 | POST | /api/v1/users | Create a new user | [json](#create-user) |
 | GET | /api/v1/users/:user_id?api_key='api_key' | Get a user| [json](#get-user) |
+| POST | /api/v1/users/login | login validation for a user | [json](#login-user) |
 
 ## JSON Responses
 
@@ -53,3 +54,27 @@ body:
     }
   }
   ```
+
+## Login User
+`POST /api/v1/users/login`
+```json
+body:
+{
+  "email": "email@domain.com",
+  "password": "password"
+}
+```
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "user",
+    "attributes": {
+      "company_id": "10",
+      "first_name": "Doug",
+      "last_name": "Welchons",
+      "api_key": "<api_key>"
+    }
+  }
+}
+```
