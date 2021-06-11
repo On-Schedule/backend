@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "GET user endpoint" do
   describe "Happy path" do
-    it "returns a user if a user id and valid api_key are provided" do
+    it "returns a 200 response and user object if id and valid api_key are provided" do
       company = Company.create!(name: "Rowan Electric")
 
       user = User.create!( company_id: company.id,
@@ -35,7 +35,7 @@ RSpec.describe "GET user endpoint" do
   end
 
   describe "Sad path and Edge case" do
-    it "returns an unauthorized error if a user doesn't exist" do
+    it "returns a 401 unauthorized error if a user doesn't exist" do
       get "/api/v1/users/1?api_key=123456789"
 
       body = JSON.parse(response.body, symbolize_names: true)
@@ -47,7 +47,7 @@ RSpec.describe "GET user endpoint" do
       expect(body[:error]).to eq("unauthorized")
     end
 
-    it "returns an unauthorized error if the api_key and user id dont match" do
+    it "returns a 401 unauthorized error if the api_key and user id dont match" do
       company = Company.create!(name: "Rowan Electric")
 
       user = User.create!( company_id: company.id,
@@ -69,7 +69,7 @@ RSpec.describe "GET user endpoint" do
       expect(body[:error]).to eq("unauthorized")
     end
 
-    it "returns an unauthorized error if no api_key is provided" do
+    it "returns a 401 unauthorized error if no api_key is provided" do
       company = Company.create!(name: "Rowan Electric")
 
       user = User.create!( company_id: company.id,
@@ -91,7 +91,7 @@ RSpec.describe "GET user endpoint" do
       expect(body[:error]).to eq("unauthorized")
     end
 
-    it "returns an unauthorized error if api_key is blank" do
+    it "returns a 401 unauthorized error if api_key is blank" do
       company = Company.create!(name: "Rowan Electric")
 
       user = User.create!( company_id: company.id,
