@@ -11,6 +11,16 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def login
+    user = nil
+    user = User.find_by(email: params[:email].downcase) if params[:email]
+    if user && user.authenticate(params[:password])
+      render json: UserSerializer.new(user), status: :ok
+    else
+      invalid_login
+    end
+  end
+
   def create
     user = User.new(user_params)
     user.api_key = SecureRandom.hex(20)
@@ -30,5 +40,9 @@ class Api::V1::UsersController < ApplicationController
 
   def unauthorized_request
     render json: { error: "unauthorized" }, status: :unauthorized
+  end
+
+  def invalid_login
+    render json: { error: "invalid login" }, status: :bad_request
   end
 end
