@@ -1,5 +1,7 @@
 class Project < ApplicationRecord
   belongs_to :company
+  has_many :project_users
+  has_many :users, through: :project_users
 
   validates_presence_of :start_date
   validates_presence_of :end_date
