@@ -47,7 +47,7 @@ RSpec.describe "POST user endpoint" do
       expect(response.content_type).to eq("application/json")
       expect(body).to be_a(Hash)
       expect(body.keys).to eq([:error])
-      expect(body[:error]).to eq("Validation failed: Company must exist, First name can't be blank, Last name can't be blank, Email can't be blank, Email is invalid, Password can't be blank, Password can't be blank, Password confirmation can't be blank")
+      expect(body[:error]).to eq("Validation failed: Company must exist, First name can't be blank, Last name can't be blank, Email can't be blank, Email is invalid, Password can't be blank, Password confirmation can't be blank")
     end
 
     it "returns a 400 response and appropriate error if the password and confirmation don't match" do

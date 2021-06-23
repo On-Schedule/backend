@@ -11,5 +11,7 @@ RSpec.describe Project, type: :model do
 
   describe "relationships" do
     it { should belong_to(:company) }
+    it { should have_many(:project_users) }
+    it { should have_many(:users).through(:project_users) }
   end
 end
