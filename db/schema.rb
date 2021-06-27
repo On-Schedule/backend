@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_27_193214) do
+ActiveRecord::Schema.define(version: 2021_06_27_193631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,8 +60,19 @@ ActiveRecord::Schema.define(version: 2021_06_27_193214) do
     t.index ["company_id"], name: "index_users_on_company_id"
   end
 
+  create_table "work_days", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "day_of_week_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["day_of_week_id"], name: "index_work_days_on_day_of_week_id"
+    t.index ["project_id"], name: "index_work_days_on_project_id"
+  end
+
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "projects", "companies"
   add_foreign_key "users", "companies"
+  add_foreign_key "work_days", "day_of_weeks"
+  add_foreign_key "work_days", "projects"
 end
