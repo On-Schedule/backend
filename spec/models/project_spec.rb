@@ -13,5 +13,7 @@ RSpec.describe Project, type: :model do
     it { should belong_to(:company) }
     it { should have_many(:project_users) }
     it { should have_many(:users).through(:project_users) }
+    it { should have_many(:work_days) }
+    it { should have_many(:day_of_weeks).through(:work_days) }
   end
 end
