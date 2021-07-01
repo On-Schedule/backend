@@ -56,4 +56,12 @@ RSpec.describe "POST project endpoint" do
       expect(body[:data][:attributes][:hours_per_day]).to eq(8)
     end
   end
+
+  describe "Sad Path and Edge Case" do
+    it "returns an error if all nessisry data is not provided"
+    it "returns an error if user is not provided"
+    it "returns an error if api_key is not provided"
+    it "returns an unathorized error if user does not exist"
+    it "returns an unathorized error if user and api key does not match"
+  end
 end
