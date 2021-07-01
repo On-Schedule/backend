@@ -9,6 +9,12 @@ class Project < ApplicationRecord
   validates_presence_of :end_date
   validates_presence_of :name
   validates :name, uniqueness: { scope: :company_id }
-  validates_presence_of :hours_per_day
-  validates_numericality_of :hours_per_day
+  validates :hours_per_day, presence: true, numericality: {
+            greater_than: 0,
+            less_than: 25
+          }
+
+  # validates :renter_id, presence: true, numericality: {
+  #         greater_than_or_equal_to: 0
+  #       }
 end
