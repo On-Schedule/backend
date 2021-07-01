@@ -70,7 +70,155 @@ RSpec.describe "POST project endpoint" do
   end
 
   describe "Sad Path and Edge Case" do
-    it "returns an error if all nessisry data is not provided"
+    it "returns a 400 error if days of week is not provided" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("At least 1 working day must me selected")
+    end
+
+    it "returns a 400 error if days of week is empty" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: []
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("At least 1 working day must me selected")
+    end
+
+    it "returns a 400 error if hours ber day is lees then 1" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Hours per day must be greater than 0")
+    end
+
+    it "returns a 400 error if hours per day is greater then 24" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 25,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Hours per day must be less than 25")
+    end
+
+    it "returns a 400 error if hours per day is blank" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: "",
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Hours per day can't be blank, Hours per day is not a number")
+    end
+
+    it "returns a 400 error if hours per day is not a integer" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: "",
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Hours per day is not a number")
+    end
+
     it "returns an error if user is not provided"
     it "returns an error if api_key is not provided"
     it "returns an unathorized error if user does not exist"

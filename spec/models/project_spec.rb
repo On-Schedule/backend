@@ -7,6 +7,8 @@ RSpec.describe Project, type: :model do
     it { should validate_presence_of(:name) }
     it { should validate_uniqueness_of(:name).scoped_to(:company_id)}
     it { should validate_presence_of(:hours_per_day) }
+    it { should validate_numericality_of(:hours_per_day).is_greater_than(0) }
+    it { should validate_numericality_of(:hours_per_day).is_less_than(25) }
   end
 
   describe "relationships" do
