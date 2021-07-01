@@ -5,10 +5,11 @@ class Api::V1::ProjectsController < ApplicationController
     if valid_user?(user)
       project = Project.new(project_params)
       project.company_id = user.company_id
-      #create WorkDays based off of days_of_week
       if project.save!
+        DayOfWeek.all.each do |day|
+          WorkDay.create!(project: project, day_of_week: day) if params[:days_of_week].include?(day.day)
+        end
         render json: ProjectSerializer.new(project), status: :created
-
       end
     end
   end
