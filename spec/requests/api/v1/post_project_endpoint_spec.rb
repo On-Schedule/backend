@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "POST project endpoint" do
   before :each do
-    DayOfWeek.create!(day: "Monday")
-    DayOfWeek.create!(day: "Tuesday")
-    DayOfWeek.create!(day: "Wednesday")
-    DayOfWeek.create!(day: "Thursday")
-    DayOfWeek.create!(day: "Friday")
-    DayOfWeek.create!(day: "Saturday")
-    DayOfWeek.create!(day: "Sunday")
+    @sunday = DayOfWeek.create!(day: "Sunday")
+    @monday = DayOfWeek.create!(day: "Monday")
+    @tuesday = DayOfWeek.create!(day: "Tuesday")
+    @wednesday = DayOfWeek.create!(day: "Wednesday")
+    @thursday = DayOfWeek.create!(day: "Thursday")
+    @friday = DayOfWeek.create!(day: "Friday")
+    @saturday = DayOfWeek.create!(day: "Saturday")
 
     @company = Company.create!(name: "Rowan Electric")
     @user = User.create!( company_id: @company.id,
@@ -48,12 +48,24 @@ RSpec.describe "POST project endpoint" do
       expect(body[:data][:id]).to eq("#{Project.last.id}")
       expect(body[:data][:type]).to eq("project")
       expect(body[:data][:attributes]).to be_a(Hash)
-      expect(body[:data][:attributes].keys).to eq([:start_date, :end_date, :name, :company_id, :hours_per_day])
+      expect(body[:data][:attributes].keys).to eq([:start_date, :end_date, :name, :company_id, :hours_per_day, :work_days])
       expect(body[:data][:attributes][:company_id]).to eq(@company.id)
       expect(body[:data][:attributes][:start_date]).to eq("2021-05-16")
       expect(body[:data][:attributes][:end_date]).to eq("2025-07-11")
       expect(body[:data][:attributes][:name]).to eq("Big Project")
       expect(body[:data][:attributes][:hours_per_day]).to eq(8)
+      expect(body[:data][:attributes][:work_days]).to be_a(Array)
+      expect(body[:data][:attributes][:work_days].count).to eq(5)
+      expect(body[:data][:attributes][:work_days][0][:project_id]).to eq(Project.last.id)
+      expect(body[:data][:attributes][:work_days][0][:day_of_week_id]).to eq(@monday.id)
+      expect(body[:data][:attributes][:work_days][1][:project_id]).to eq(Project.last.id)
+      expect(body[:data][:attributes][:work_days][1][:day_of_week_id]).to eq(@tuesday.id)
+      expect(body[:data][:attributes][:work_days][2][:project_id]).to eq(Project.last.id)
+      expect(body[:data][:attributes][:work_days][2][:day_of_week_id]).to eq(@wednesday.id)
+      expect(body[:data][:attributes][:work_days][3][:project_id]).to eq(Project.last.id)
+      expect(body[:data][:attributes][:work_days][3][:day_of_week_id]).to eq(@thursday.id)
+      expect(body[:data][:attributes][:work_days][4][:project_id]).to eq(Project.last.id)
+      expect(body[:data][:attributes][:work_days][4][:day_of_week_id]).to eq(@friday.id)
     end
   end
 
