@@ -283,6 +283,153 @@ RSpec.describe "POST project endpoint" do
       expect(body[:error]).to eq("Validation failed: Hours per day is not a number")
     end
 
+    it "returns a 400 error if start date is not provided" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Start date can't be blank")
+    end
+
+    it "returns a 400 error if start date is blank" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: "",
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Start date can't be blank")
+    end
+
+    xit "returns a 400 error if start date is not a date" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: "not a date",
+                          end_date: Date.new(2025, 7, 11),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: Start date can't be blank")
+    end
+
+    it "returns a 400 error if end date is not provided" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: End date can't be blank")
+    end
+
+    it "returns a 400 error if end date is blank" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: "",
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: End date can't be blank")
+    end
+
+    xit "returns a 400 error if end date is not a date" do
+      project_params = { user_id: @user.id,
+                          api_key: @user.api_key,
+                          start_date: Date.new(2021, 5, 16),
+                          end_date: "Not a date",
+                          name: "Big Project",
+                          hours_per_day: 8,
+                          days_of_week: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                        }
+
+      headers = {"CONTENT_TYPE" => "application/json",
+                 "ACCEPT"       => "application/json"}
+
+      post "/api/v1/projects", headers: headers, params: project_params.to_json
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
+      expect(body).to be_a(Hash)
+      expect(body.keys).to eq([:error])
+      expect(body[:error]).to eq("Validation failed: End date can't be blank")
+    end
 
     describe "Unauthorized Errors" do
       it "returns a 401 unauthorized error if a user doesn't exist" do

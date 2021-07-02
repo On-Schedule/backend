@@ -47,6 +47,12 @@
   - endpoint returns a 400 error if hours per day is greater then 24
   - endpoint returns a 400 error if hours per day is blank
   - endpoint returns a 400 error if hours per day is not a integer
+  - endpoint returns a 400 error if start date is not provided
+  - endpoint returns a 400 error if start date is blank
+  - *endpoint returns a 400 error if start date is not a date*
+  - endpoint returns a 400 error if end date is not provided
+  - endpoint returns a 400 error if end date is blank
+  - *endpoint returns a 400 error if end date is not a date*
   - endpoint returns a 401 unauthorized error if a user doesn't exist
   - endpoint returns a 401 unauthorized error if the api_key and user id dont match
   - endpoint returns a 401 unauthorized error if user is not provided
