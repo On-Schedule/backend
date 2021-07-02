@@ -78,3 +78,76 @@ body:
   }
 }
 ```
+
+## Create Project
+`POST /api/v1/projects`
+```json
+body:
+{
+  "user_id": "2",
+  "api_key": "<api_kay>",
+  "start_date": "2021-05-16",
+  "end_date": "2025-07-11",
+  "name": "Big Project",
+  "hours_per_day": 8,
+  "days_of_week": [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday"
+  ]
+}
+```
+```json
+{
+  "data": {
+    "id": "204",
+    "type": "project",
+    "attributes": {
+      "start_date": "2021-05-16",
+      "end_date": "2025-07-11",
+      "name": "Big Project",
+      "company_id": 1384,
+      "hours_per_day": 8,
+      "work_days": [
+        {
+          "id": 311,
+          "project_id": 204,
+          "day_of_week_id": 2697,
+          "created_at": "2021-07-01T23:15:10.645Z",
+          "updated_at":"2021-07-01T23:15:10.645Z"
+        },
+        {
+          "id": 312,
+          "project_id": 204,
+          "day_of_week_id": 2698,
+          "created_at": "2021-07-01T23:15:10.648Z",
+          "updated_at":"2021-07-01T23:15:10.648Z"
+        },
+        {
+          "id": 313,
+          "project_id": 204,
+          "day_of_week_id": 2699,
+          "created_at": "2021-07-01T23:15:10.650Z",
+          "updated_at":"2021-07-01T23:15:10.650Z"
+        },
+        {
+          "id": 314,
+          "project_id": 204,
+          "day_of_week_id": 2700,
+          "created_at": "2021-07-01T23:15:10.652Z",
+          "updated_at":"2021-07-01T23:15:10.652Z"
+        },
+        {
+          "id": 315,
+          "project_id": 204,
+          "day_of_week_id": 2701,
+          "created_at": "2021-07-01T23:15:10.654Z",
+          "updated_at":"2021-07-01T23:15:10.654Z"
+        }
+      ]
+    }
+  }
+}
+```

@@ -1,10 +1,7 @@
 class Api::V1::UsersController < ApplicationController
-  rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
-  rescue_from ActiveRecord::RecordNotFound, with: :unauthorized_request
-
   def show
     user = User.find(params[:id])
-    if user.api_key == params[:api_key]
+    if valid_user?(user)
       render json: UserSerializer.new(user), status: :ok
     else
       unauthorized_request
@@ -34,15 +31,7 @@ class Api::V1::UsersController < ApplicationController
     params.permit(:company_id, :first_name, :last_name, :email.downcase, :password, :password_confirmation)
   end
 
-  def invalid_record(exception)
-    render json: { error: exception.message }, status: :bad_request
-  end
-
-  def unauthorized_request
-    render json: { error: "unauthorized" }, status: :unauthorized
-  end
-
-  def invalid_login
-    render json: { error: "invalid login" }, status: :bad_request
+  def valid_user?(user)
+    user.api_key == params[:api_key]
   end
 end
