@@ -11,7 +11,7 @@ class Project < ApplicationRecord
   validates :name, uniqueness: { scope: :company_id }
   validates :hours_per_day, presence: true, numericality: {
             greater_than: 0,
-            less_than: 25
+            less_than_or_equal_to: 24
           }
 
   # validates :renter_id, presence: true, numericality: {

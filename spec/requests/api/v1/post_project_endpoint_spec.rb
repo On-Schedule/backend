@@ -230,7 +230,7 @@ RSpec.describe "POST project endpoint" do
       expect(response.content_type).to eq("application/json")
       expect(body).to be_a(Hash)
       expect(body.keys).to eq([:error])
-      expect(body[:error]).to eq("Validation failed: Hours per day must be less than 25")
+      expect(body[:error]).to eq("Validation failed: Hours per day must be less than or equal to 24")
     end
 
     it "returns a 400 error if hours per day is blank" do
